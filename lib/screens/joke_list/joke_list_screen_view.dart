@@ -51,12 +51,9 @@ class JokeListScreen extends StatelessWidget {
                     return JokeWidget(
                       joke: joke,
                       isVisible: isVisible,
-                      addFavoriteFunc: () {
-                        viewModel.toggleFavorite(joke: joke);
-                      },
-                      togglePunchlineFunc: () {
-                        viewModel.togglePunchline(index: index);
-                      },
+                      isFavorite: joke.isFavorite,
+                      addFavoriteFunc: () => viewModel.toggleFavorite(joke: joke),
+                      togglePunchlineFunc: () => viewModel.togglePunchline(index: index),
                     );
                   },
                 ),

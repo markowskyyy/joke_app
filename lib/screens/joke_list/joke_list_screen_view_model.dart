@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:joke_app/core/entities/joke.dart';
 import 'package:joke_app/data/services/joke_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JokeViewModel extends ChangeNotifier {
   final JokeService jokeService;
 
-  JokeViewModel({required this.jokeService});
+  JokeViewModel({required this.jokeService}) {
+    _loadFavorites();
+  }
 
   List<Joke> _jokes = [];
   List<Joke> get jokes => _jokes;
 
-  // лист шуток для поиска
+  // лист joke для поиска
   List<Joke> _jokesCopy = [];
 
   List<String> _categories = [];
@@ -21,11 +24,15 @@ class JokeViewModel extends ChangeNotifier {
 
   Map<int, bool> _jokeVisibility = {};
 
+  // фильтры
+
   void setFilter(String filter) {
     _filter = filter;
     fetchJokes();
     notifyListeners();
   }
+
+  // подгрузка шутко / категорий
 
   Future<void> fetchCategories() async {
     try {
@@ -52,6 +59,8 @@ class JokeViewModel extends ChangeNotifier {
 
   }
 
+  // поиск
+
   void searchJokes(String query) {
 
     _jokes = List.from(_jokesCopy.map((joke) => Joke.copy(joke)));
@@ -62,6 +71,8 @@ class JokeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // отображение puhcline
+
   void togglePunchline({required int index}) {
     _jokeVisibility[index] = !_jokeVisibility[index]!;
     notifyListeners();
@@ -71,7 +82,25 @@ class JokeViewModel extends ChangeNotifier {
     return _jokeVisibility[index] ?? false;
   }
 
-  void toggleFavorite({required Joke joke}) {
-    // Логика добавления в избранное, можно хранить в локальном хранилище или в памяти
+  // добавление / подгрузка Joke в избранные
+
+  Future<void> _loadFavorites() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? favoriteIds = prefs.getStringList('favorite_jokes');
+
+    if (favoriteIds != null) {
+      for (var joke in _jokes) {
+        joke.isFavorite = favoriteIds.contains(joke.id.toString());
+      }
+    }
+  }
+  void toggleFavorite({required Joke joke}) async {
+    joke.isFavorite = !joke.isFavorite;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favoriteIds = _jokes.where((joke) => joke.isFavorite).map((joke) => joke.id.toString()).toList();
+    await prefs.setStringList('favorite_jokes', favoriteIds);
+
+    notifyListeners();
   }
 }
