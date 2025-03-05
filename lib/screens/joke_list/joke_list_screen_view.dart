@@ -13,7 +13,7 @@ class JokeListScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Jokes App'),
       ),
-      body: Consumer<JokeViewModel>(
+      body: Consumer<JokeListViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.categories.isEmpty) {
             viewModel.fetchCategories();
@@ -52,8 +52,12 @@ class JokeListScreen extends StatelessWidget {
                       joke: joke,
                       isVisible: isVisible,
                       isFavorite: joke.isFavorite,
-                      addFavoriteFunc: () => viewModel.toggleFavorite(joke: joke),
-                      togglePunchlineFunc: () => viewModel.togglePunchline(index: index),
+                      addFavoriteFunc: () {
+                        viewModel.toggleFavorite(joke: joke);
+                      },
+                      togglePunchlineFunc: () {
+                        viewModel.togglePunchline(index: index);
+                      },
                     );
                   },
                 ),

@@ -3,10 +3,10 @@ import 'package:joke_app/core/entities/joke.dart';
 import 'package:joke_app/data/services/joke_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class JokeViewModel extends ChangeNotifier {
+class JokeListViewModel extends ChangeNotifier {
   final JokeService jokeService;
 
-  JokeViewModel({required this.jokeService}) {
+  JokeListViewModel({required this.jokeService}) {
     _loadFavorites();
   }
 

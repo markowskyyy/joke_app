@@ -10,7 +10,6 @@ class JokeService {
     final response = await http.get(Uri.parse('$baseUrl/random_joke'));
 
     if (response.statusCode == 200) {
-      // Преобразуем JSON в объект Joke
       var jsonResponse = json.decode(response.body);
       return Joke.fromJson(jsonResponse);
     } else {
@@ -51,6 +50,17 @@ class JokeService {
       return List<String>.from(jsonResponse);
     } else {
       throw Exception('Failed to load joke types');
+    }
+  }
+
+  Future<Joke> fetchJokeById(int id) async {
+    final response = await http.get(Uri.parse('https://official-joke-api.appspot.com/jokes/$id'));
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return Joke.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load joke');
     }
   }
 }

@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
         Provider<JokeService>(create: (_) => JokeService()),
 
         // view models
-        ChangeNotifierProvider<JokeViewModel>(
-          create: (context) => JokeViewModel(jokeService: Provider.of<JokeService>(context, listen: false)),
+        ChangeNotifierProvider<JokeListViewModel>(
+          create: (context) => JokeListViewModel(jokeService: Provider.of<JokeService>(context, listen: false)),
         ),
       ],
       child: MaterialApp(
