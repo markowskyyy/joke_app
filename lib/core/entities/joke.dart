@@ -17,4 +17,6 @@ class Joke {
       category: json['type'],
     );
   }
+
+  Joke.copy(Joke other) : setup = other.setup, punchline = other.punchline, category = other.category;
 }

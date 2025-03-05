@@ -6,7 +6,6 @@ class JokeService {
 
   static const String baseUrl = 'https://official-joke-api.appspot.com';
 
-  // Метод для получения одной случайной шутки
   Future<Joke> fetchRandomJoke() async {
     final response = await http.get(Uri.parse('$baseUrl/random_joke'));
 
@@ -19,21 +18,22 @@ class JokeService {
     }
   }
 
-  // Метод для получения случайных шуток
   Future<List<Joke>> fetchRandomJokes({int numberOfJokes = 10}) async {
-    final response = await http.get(Uri.parse('$baseUrl/jokes/random/$numberOfJokes'));
+    final response = await http.get(
+      Uri.parse('$baseUrl/jokes/random/$numberOfJokes'),
+    );
 
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((e) => Joke.fromJson(e)).toList();
     } else {
-      throw Exception('Failed to load jokes');
+      throw Exception('Failed to load jokes: ${response.statusCode} ${response.reasonPhrase}');
     }
   }
 
-  // Метод для получения шуток по типу
-  Future<List<Joke>> fetchJokesByType(String type, {int numberOfJokes = 10}) async {
-    final response = await http.get(Uri.parse('$baseUrl/jokes/$type/random/$numberOfJokes'));
+  Future<List<Joke>> fetchJokesByType(String type) async {
+
+    final response = await http.get(Uri.parse('$baseUrl/jokes/$type/ten'));
 
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body);
@@ -43,7 +43,6 @@ class JokeService {
     }
   }
 
-  // Метод для получения типов шуток
   Future<List<String>> fetchJokeTypes() async {
     final response = await http.get(Uri.parse('$baseUrl/types'));
 
