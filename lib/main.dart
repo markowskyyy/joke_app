@@ -23,9 +23,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<JokeListViewModel>(
           create: (context) => JokeListViewModel(jokeService: Provider.of<JokeService>(context, listen: false)),
         ),
+
+
       ],
       child: MaterialApp(
-        home: const JokeListScreen(),
+        theme: ThemeData(
+
+        ),
+        home: JokeListScreen(),
       ),
     );
   }

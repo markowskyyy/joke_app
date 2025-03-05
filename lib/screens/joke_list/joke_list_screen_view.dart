@@ -11,7 +11,18 @@ class JokeListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         title: Text('Jokes App'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                final viewModel = Provider.of<JokeListViewModel>(context, listen: false);
+                viewModel.copyJokesToClipboard(context: context);
+              },
+              icon: Icon(Icons.copy),
+          )
+        ],
       ),
       body: Consumer<JokeListViewModel>(
         builder: (context, viewModel, child) {
@@ -42,18 +53,15 @@ class JokeListScreen extends StatelessWidget {
                 },
               ),
               Expanded(
-                child: ListView.builder(
+                child: viewModel.isLoadnig ? CupertinoActivityIndicator() : ListView.builder(
                   itemCount: viewModel.jokes.length,
                   itemBuilder: (context, index) {
                     final joke = viewModel.jokes[index];
-                    final isVisible = viewModel.isPunchlineVisible(index: index);
 
                     return JokeWidget(
                       joke: joke,
-                      isVisible: isVisible,
-                      isFavorite: joke.isFavorite,
                       addFavoriteFunc: () {
-                        viewModel.toggleFavorite(joke: joke);
+                        viewModel.toggleFavourite(joke: joke);
                       },
                       togglePunchlineFunc: () {
                         viewModel.togglePunchline(index: index);

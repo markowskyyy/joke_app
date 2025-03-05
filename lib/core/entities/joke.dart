@@ -4,6 +4,7 @@ class Joke {
   final String category;
   final int id;
   bool isFavorite;
+  bool isVisible;
 
   Joke({
     required this.setup,
@@ -11,6 +12,7 @@ class Joke {
     required this.category,
     required this.id,
     this.isFavorite = false,
+    this.isVisible = false,
   });
 
   factory Joke.fromJson(Map<String, dynamic> json) {
@@ -19,7 +21,13 @@ class Joke {
       punchline: json['punchline'],
       category: json['type'],
       id: json['id'],
+      isFavorite: false,
+      isVisible: false,
     );
+  }
+
+  int get totalCharacters {
+    return setup.length + punchline.length;
   }
 
   Joke.copy(Joke other)
@@ -27,5 +35,6 @@ class Joke {
         punchline = other.punchline,
         category = other.category,
         id = other.id,
-        isFavorite = other.isFavorite;
+        isFavorite = other.isFavorite,
+        isVisible = other.isVisible;
 }

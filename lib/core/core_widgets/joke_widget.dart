@@ -5,15 +5,11 @@ import 'package:joke_app/design.dart';
 
 class JokeWidget extends StatelessWidget {
   final Joke joke;
-  final bool isVisible;
-  final bool isFavorite;
   final addFavoriteFunc;
   final togglePunchlineFunc;
   const JokeWidget({
     Key? key,
     required this.joke,
-    required this.isVisible,
-    required this.isFavorite,
     required this.addFavoriteFunc,
     required this.togglePunchlineFunc,
 
@@ -25,13 +21,21 @@ class JokeWidget extends StatelessWidget {
       onTap: togglePunchlineFunc,
       child: Card(
         margin: EdgeInsets.all(8),
+        color: jokeCategoriesColors[joke.category],
         child: ListTile(
           title: Text(joke.setup),
-          subtitle: isVisible ? Text(joke.punchline) : null,
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (joke.isVisible) Text(joke.punchline),
+              SizedBox(height: 8),
+              Text('${joke.totalCharacters}'),
+            ],
+          ),
           trailing: IconButton(
             icon: Icon(
-              isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-              color: isFavorite ? colorFavoriteIcon : colorNotAFavoriteIcon,
+              joke.isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+              color: joke.isFavorite ? colorFavoriteIcon : colorNotAFavoriteIcon,
             ),
             onPressed: addFavoriteFunc
           ),
