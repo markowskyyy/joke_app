@@ -49,10 +49,11 @@ class JokeListViewModel extends ChangeNotifier {
       print('Failed to load categories: $e');
     }
   }
-
   Future<void> fetchJokes({int numberOfJokes = 10}) async {
     _isLoadnig = true;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
 
     if (_filter == 'any') {
       _jokes = await jokeService.fetchRandomJokes(numberOfJokes: numberOfJokes);
@@ -107,8 +108,6 @@ class JokeListViewModel extends ChangeNotifier {
 
     return [];
   }
-
-
   Future<void> _loadFavouritesAndChageFields() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? favoriteIds = prefs.getStringList('favorite_jokes');
@@ -119,7 +118,6 @@ class JokeListViewModel extends ChangeNotifier {
       }
     }
   }
-
   Future<void> toggleFavourite({required Joke joke}) async {
     joke.isFavorite = !joke.isFavorite;
 
@@ -135,7 +133,6 @@ class JokeListViewModel extends ChangeNotifier {
     notifyListeners();
     await prefs.setStringList('favorite_jokes', favoriteIds);
   }
-
 
   // копирование в буфер
 
