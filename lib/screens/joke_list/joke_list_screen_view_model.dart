@@ -9,6 +9,8 @@ class JokeListViewModel extends ChangeNotifier {
 
   JokeListViewModel({required this.jokeService}) {
     _loadFavouritesAndChageFields();
+    fetchCategories();
+    fetchJokes();
   }
 
   bool _isLoadnig = false;
@@ -92,6 +94,7 @@ class JokeListViewModel extends ChangeNotifier {
   // добавление / подгрузка Joke в избранные
 
   Future<List<Joke>> fetchFavouriteJokes() async {
+    print("421 421");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? favoriteIds = prefs.getStringList('favorite_jokes');
 

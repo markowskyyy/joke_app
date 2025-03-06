@@ -27,8 +27,6 @@ class JokeListScreen extends StatelessWidget {
       body: Consumer<JokeListViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.categories.isEmpty) {
-            viewModel.fetchCategories();
-            viewModel.fetchJokes();
             return Center(child: CupertinoActivityIndicator());
           }
           return Column(
